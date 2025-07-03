@@ -110,8 +110,17 @@ export async function signTransaction(
   if (!signResponse?.sig) {
     throw new InternalError('Failed to obtain signature');
   }
-
-  return signResponse.sig;
+  return JSON.stringify({
+    responses: [
+      {
+        commandSigData: {
+          sigs: [{ pubKey: signResponse.pubKey, sig: signResponse.sig }],
+          cmd: transaction,
+        },
+        outcome: { hash: signResponse.hash, result: 'success' },
+      },
+    ],
+  });
 }
 
 async function transactionConfirmationDialog(
@@ -143,14 +152,12 @@ async function continuationConfirmationDialog(cont: any, meta: any) {
     params: {
       type: 'confirmation',
       content: panel([
-        heading(
-          'Finish cross-chain transaction',
+        heading('Finish cross-chain transaction'),
+        text(
+          `Complete the cross-chain transaction by approving this gas fee payment of up to ${gasFee} KDA`,
         ),
-        text(`Complete the cross-chain transaction by approving this gas fee payment of up to ${gasFee} KDA`),
         divider(),
-        heading(
-          'Transaction Details',
-        ),
+        heading('Transaction Details'),
         text(`From chain ${cont.data.fromChain} to chain ${cont.data.toChain}`),
         divider(),
         text('**Request Key:**'),

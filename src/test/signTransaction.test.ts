@@ -151,9 +151,39 @@ describe('kda_signTransaction', () => {
     `);
     await ui.ok();
 
-    expect(await response).toRespondWith(
-      'd51f64d0837faff9349ae877a19ea4d8d85f2c979d67294f32564bcbdbf79b449e80d3e132e21456c399096b1613f794b23e9e87d50238e78e457cbb755ef503',
-    );
+    const result = await response;
+
+    if (
+      'result' in result.response &&
+      typeof result.response.result === 'string'
+    ) {
+      const parsedResult = JSON.parse(result.response.result);
+
+      expect(parsedResult).toMatchObject({
+        responses: [
+          {
+            commandSigData: {
+              cmd: expect.stringContaining('"payload":{"exec":'),
+              sigs: [
+                {
+                  pubKey:
+                    '62bb7cf156ccfbe17bd6ca5460098ca9398a4aa3f04bd617f7a721b6e2e5aac7',
+                  sig: 'd51f64d0837faff9349ae877a19ea4d8d85f2c979d67294f32564bcbdbf79b449e80d3e132e21456c399096b1613f794b23e9e87d50238e78e457cbb755ef503',
+                },
+              ],
+            },
+            outcome: {
+              hash: '_aK1VdurS1aeWEZPtkbHoaCjnBHD5Lqt4V0q-_FKYf4',
+              result: 'success',
+            },
+          },
+        ],
+      });
+    } else {
+      throw new Error(
+        `Expected result string but got: ${JSON.stringify(result.response)}`,
+      );
+    }
   });
 
   it('should throw an expection when payload is wrong', async () => {

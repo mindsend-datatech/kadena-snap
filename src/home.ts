@@ -1,22 +1,32 @@
 import type { OnHomePageHandler } from '@metamask/snaps-sdk';
-import { image, panel, text, } from '@metamask/snaps-sdk';
+import { image, panel, text } from '@metamask/snaps-sdk';
 import packageJson from '../package.json';
 
-const kadenaLogo = image(`<svg data-style="kdacolor" width="64" height="64" viewBox="0 0 64 64" fill="none"
-  xmlns="http://www.w3.org/2000/svg">
-  <path d="M56.8703 56L39.4779 55.9911L17.7995 39.0708L26.6166 32L56.8703 56Z" id="{kda.foundation.color.icon.brand.logo.default}" fill="#4A9079"/>
-  <path d="M56.8703 8H39.4868L17.7995 24.9292L26.6166 32L56.8703 8Z" id="{kda.foundation.color.icon.brand.logo.default}" fill="#4A9079"/>
-  <path d="M17.7935 55.9913L7 47.4633V16.537L17.7935 8.00901V55.9913Z" id="{kda.foundation.color.icon.brand.logo.default}" fill="#4A9079"/>
-</svg>`);
+const snaKLogo = image(`
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="64"
+    height="27"
+    viewBox="0 0 1024 1024"
+  >
+    <path
+      d="M4175 2570c37.66-1.23 69.24 34.1 47 70-22.12 35.69-55.99 17.41-79-1H3701q-55.5 54.495-111 109v202l87 84c13.9-.48 29.67-2.73 41 2 35.79 14.95 53.24 75.03 17 103-36.53 28.2-88.08 7.57-99-31-4.21-14.87 1.49-30.8 4-42-15.85-11.91-93.57-86.23-98-102q-.495-63.99-1-128V2734c4.56-17.56 21.88-28.54 34-39l75-75c8.58-8.58 18.09-22.35 30-27q146.49-1.005 293-2c69.27-5.28 154.05 17.58 202-21Zm-1 144c67.49-1.55 69.35 79.18 16 89-27.42 5.05-31.43-15.8-46-21q-204.48.495-409 1c-5.55 21.01-4.53 98.34-1 121q87.99.495 176 1c26.07-.01 63.55-2.08 53 32-7.5 24.24-125.06 15-164 15-24 0-85.19 6.13-100-2-22.86-12.54-14-114.62-14-153 0-14.5-3.02-37.07 2-48 10.84-23.59 82.39-14 119-14q169.485-.495 339-1c9.74-8.14 16.95-12.91 29-20Zm-126 158c41.65-.73 64.52 18.35 71 52q-1.005 15-2 30l81 81q10.5 10.995 21 22c8.61 19.86 2 80.68 2 107q-.495 66.495-1 133c-4.78 15.7-22.43 25.45-33 36q-39.495 38.49-79 77c-8.6 7.01-14.55 18.94-26 23q-66 .495-132 1-161.985-.495-324-1c-8.51 2.5-14.42 17.24-24 21-22.6 8.86-46.35-3.21-56-19-18.3-29.95 5.37-78.32 47-69 14.3 3.2 19.65 16.28 30 20h441q40.5-39.99 81-80c7.66-7.17 24.98-17.37 28-28q-.495-100.485-1-201-45-43.995-90-88c-9.73 1.24-22.23 5.85-35 3-29.95-6.69-62.17-39.59-46-81 9.04-23.16 25.78-27.6 47-39Zm5 42c-4.16 3.87-8.36 5.42-11 11-4.19 8.08.11 15.59 4 21 5.75 2.29 8.77 4.04 18 4 8.64-4.12 13.27-9.87 13-23q-3.495-5.505-7-11Zm-361 159c-5.72 3.87-10.39 5.89-13 13-2.33 4.54-2.14 11.39 1 15 3.15 6.93 9.39 9.41 20 9 9.09-4.74 14.39-8.5 14-23-4.08-8.91-8.81-14.06-22-14m129 1h175c21.36 0 55.8-4.35 69 5 12.05 8.54 10 28.3 10 49 0 35.78 7.85 147.23-11 160-15.43 10.45-93.6 4-120 4q-160.98.495-322 1c-31.77 61.25-126.22-22.07-62-63 16.13-10.28 41.5-5.68 54 4q4.995 5.505 10 11h33q184.98-.495 370-1c.2-25.16 5.48-106.49-2-123h-204c-29.21-7.67-15.13-35.73 0-47"
+      fill="#00F53D"
+      fillRule="evenodd"
+      transform="translate(-3372 -2502)"
+    />
+  </svg>
+`);
 
 export const onHomePage: OnHomePageHandler = async () => {
   return {
     content: panel([
-      kadenaLogo,
-      text(`Kadena Snap v${packageJson.version}`),
-      text('Use the [official frontend](https://metamask.kadena.io/) to manage your accounts and KDA.'),
+      snaKLogo,
+      text(`snaK v${packageJson.version}`),
+      text(
+        'Use the [official frontend](https://snak.mindsend.xyz/) to manage your accounts and KDA.',
+      ),
       text('Learn more about Kadena [here](https://kadena.io/).'),
     ]),
   };
 };
-

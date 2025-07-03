@@ -9,3 +9,6 @@ export * from './setActiveNetwork';
 export * from './signTransaction';
 export * from './storeAccount';
 export * from './storeNetwork';
+export * from './getAccounts_v2';
+export * from './getNetwork_v1';
+export * from './getNetworks_v1';

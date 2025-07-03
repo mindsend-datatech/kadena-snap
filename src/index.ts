@@ -7,9 +7,12 @@ import {
   deleteNetwork,
   derive,
   getAccounts,
+  getAccounts_v2,
   getActiveNetwork,
   setActiveNetwork,
   getNetworks,
+  getNetworks_v1,
+  getNetwork_v1,
   setAccountName,
   signTransaction,
   storeNetwork,
@@ -90,6 +93,8 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   switch (request.method) {
     case 'kda_getAccounts':
       return getAccounts(snapApi);
+    case 'kda_getAccounts_v2':
+      return JSON.parse(JSON.stringify(getAccounts_v2(snapApi)));
     case 'kda_getHardwareAccounts':
       return getHardwareAccounts(snapApi);
     case 'kda_addAccount':
@@ -110,6 +115,10 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       return deleteHardwareAccount(snapApi);
     case 'kda_getNetworks':
       return getNetworks(snapApi);
+    case 'kda_getNetworks_v1':
+      return JSON.parse(JSON.stringify(getNetworks_v1(snapApi)));
+    case 'kda_getNetwork_v1':
+      return JSON.parse(JSON.stringify(getNetwork_v1(snapApi)));
     case 'kda_storeNetwork':
       return storeNetwork(snapApi);
     case 'kda_deleteNetwork':

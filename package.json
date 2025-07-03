@@ -1,14 +1,10 @@
 {
-  "name": "@kadena/snap",
-  "version": "1.0.0",
+  "name": "@mindsend/kadena-snap",
+  "version": "1.0.4",
   "description": "MetaMask snap to manage your Kadena accounts and KDA.",
   "license": "BSD-3-Clause",
   "main": "./dist/bundle.js",
-  "files": [
-    "dist/",
-    "images/",
-    "snap.manifest.json"
-  ],
+  "files": ["dist/", "images/", "snap.manifest.json"],
   "scripts": {
     "build": "mm-snap build",
     "build:clean": "yarn clean && yarn build",
@@ -23,6 +19,7 @@
   },
   "dependencies": {
     "@kadena/cryptography-utils": "^0.3.8",
+    "@kadena/wallet-adapter-core": "^0.0.1-beta.2",
     "@metamask/snaps-sdk": "^3.1.1",
     "@metamask/snaps-ui": "^2.0.0",
     "bip39": "^3.1.0",
