@@ -3,7 +3,7 @@
   "description": "Metamask snap to manage your Kadena accounts and KDA.",
   "proposedName": "Kadena Wallet",
   "source": {
-    "shasum": "6Sk+zGLHBeVNUkgkRvc7cNBmalUFeTci6pMiSWXtzXw=",
+    "shasum": "3mg7oKY9IeR4RVUt3+Mpk4QOvO1nV3rzdwxCzGk53OQ=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -18,7 +18,11 @@
     "endowment:page-home": {},
     "snap_getBip32Entropy": [
       {
-        "path": ["m", "44'", "626'"],
+        "path": [
+          "m",
+          "44'",
+          "626'"
+        ],
         "curve": "ed25519"
       }
     ],
