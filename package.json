@@ -3,8 +3,20 @@
   "version": "1.0.6",
   "description": "MetaMask snap to manage your Kadena accounts and KDA.",
   "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mindsend-datatech/kadena-snap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mindsend-datatech/kadena-snap/issues"
+  },
+  "homepage": "https://github.com/mindsend-datatech/kadena-snap#readme",
   "main": "./dist/bundle.js",
-  "files": ["dist/", "images/", "snap.manifest.json"],
+  "files": [
+    "dist/",
+    "images/",
+    "snap.manifest.json"
+  ],
   "scripts": {
     "build": "mm-snap build",
     "build:clean": "yarn clean && yarn build",
@@ -57,11 +69,12 @@
     "rimraf": "^3.0.2",
     "through2": "^4.0.2",
     "ts-jest": "^29.1.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "webpack": "^5.100.0"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@4.9.2",
   "engines": {
-    "node": ">=18.6.0"
+    "node": ">=22.0.0"
   },
   "publishConfig": {
     "access": "public",
