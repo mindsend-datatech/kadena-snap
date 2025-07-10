@@ -1,13 +1,14 @@
-import { installSnap } from '@metamask/snaps-jest';
-import { MOCK_MAINNET, MOCK_TESTNET } from './helpers/test-data';
-import { withId } from './helpers/test-utils';
+import { installSnap } from "@metamask/snaps-jest";
+import { MOCK_MAINNET, MOCK_TESTNET } from "./helpers/test-data";
+import { withId } from "./helpers/test-utils";
+import { assertIsConfirmationDialog } from "@metamask/snaps-jest";
 
-describe('kda_storeNetwork', () => {
-  it('Should store and correctly return the network', async () => {
+describe("kda_storeNetwork", () => {
+  it("Should store and correctly return the network", async () => {
     const { request } = await installSnap();
 
     const networks: any = await request({
-      method: 'kda_getNetworks',
+      method: "kda_getNetworks",
     });
 
     expect(networks).toRespondWith([
@@ -17,23 +18,24 @@ describe('kda_storeNetwork', () => {
 
     const MOCK_NEW_MAINNET = {
       ...MOCK_MAINNET,
-      name: 'New Kadena Mainnet',
+      name: "New Kadena Mainnet",
     };
 
     const newNetworkResponse = request({
-      method: 'kda_storeNetwork',
+      method: "kda_storeNetwork",
       params: {
         network: MOCK_NEW_MAINNET,
       },
     });
     const ui = await newNetworkResponse.getInterface({ timeout: 50000 });
+    assertIsConfirmationDialog(ui);
     await ui.ok();
     const newNetwork = await newNetworkResponse;
 
     expect(newNetwork).toRespondWith(withId(MOCK_NEW_MAINNET));
 
     const networks2: any = await request({
-      method: 'kda_getNetworks',
+      method: "kda_getNetworks",
     });
 
     expect(networks2).toRespondWith([
@@ -43,11 +45,11 @@ describe('kda_storeNetwork', () => {
     ]);
   });
 
-  it('Should reject existing network name', async () => {
+  it("Should reject existing network name", async () => {
     const { request } = await installSnap();
 
     const newNetworkResponse = await request({
-      method: 'kda_storeNetwork',
+      method: "kda_storeNetwork",
       params: {
         network: MOCK_MAINNET,
       },
@@ -55,16 +57,16 @@ describe('kda_storeNetwork', () => {
 
     expect(newNetworkResponse).toRespondWithError({
       code: -32600,
-      message: 'Network Kadena Mainnet already exists',
+      message: "Network Kadena Mainnet already exists",
       stack: expect.any(String),
     });
   });
 
-  it('Should reject invalid network data', async () => {
+  it("Should reject invalid network data", async () => {
     const { request } = await installSnap();
 
     const newNetworkResponse = await request({
-      method: 'kda_storeNetwork',
+      method: "kda_storeNetwork",
       params: {
         network: {
           ...MOCK_MAINNET,
