@@ -9,7 +9,7 @@ import {
 import { Box, Copyable, Divider, Heading, Text } from '@metamask/snaps-sdk/jsx';
 import { derive } from './addAccount';
 import { ApiParams, SignTransactionRequestParams } from '../types';
-import { ISigner, ICommandPayload } from '@kadena/types';
+import type { ISigner, ICommandPayload } from '@kadena/types';
 import { makeValidator } from '../utils/validate';
 import { renderTransactionRequest } from '../utils/renderSignatureRequest';
 
@@ -125,9 +125,9 @@ export async function signTransaction(
 
 async function transactionConfirmationDialog(
   signer: ISigner,
-  txn: any,
+  txn: ICommandPayload,
   snapApi: ApiParams,
-) {
+): Promise<boolean> {
   const result = await snap.request({
     method: 'snap_dialog',
     params: {
@@ -145,7 +145,28 @@ async function transactionConfirmationDialog(
   return result;
 }
 
-async function continuationConfirmationDialog(cont: any, meta: any) {
+interface IContinuationData {
+  fromChain: string;
+  toChain: string;
+  from: string;
+  to: string;
+  amount: string;
+}
+
+interface IContinuation {
+  pactId: string;
+  data: IContinuationData;
+}
+
+interface ITransactionMeta {
+  gasLimit: number;
+  gasPrice: number;
+}
+
+async function continuationConfirmationDialog(
+  cont: IContinuation,
+  meta: ITransactionMeta,
+): Promise<boolean> {
   const gasFee = meta.gasLimit * meta.gasPrice;
   const result = await snap.request({
     method: 'snap_dialog',
