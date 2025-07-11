@@ -1,6 +1,6 @@
 import { installSnap } from "@metamask/snaps-jest";
-import { assert } from '@metamask/utils';
 import { getAccounts } from "./helpers/test-utils";
+import { assertIsConfirmationDialog } from "@metamask/snaps-jest";
 
 describe("kda_signTransaction", () => {
   it("should get the signature of a transaction", async () => {
@@ -17,8 +17,140 @@ describe("kda_signTransaction", () => {
     });
 
     const ui = await response.getInterface({ timeout: 50000 });
-    expect(JSON.parse(JSON.stringify(ui.content.props))).toMatchSnapshot();
-    assert(ui.type === 'confirmation');
+    expect(JSON.parse(JSON.stringify(ui.content.props))).toMatchInlineSnapshot(`
+      {
+        "children": [
+          {
+            "key": null,
+            "props": {
+              "children": "Transaction signature request",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {},
+            "type": "Divider",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": {
+                "key": null,
+                "props": {
+                  "children": "APPROVING (1/2)",
+                },
+                "type": "Bold",
+              },
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "Send: 0.1 KDA",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "From:",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "k:62bb7cf156ccfbe17bd6ca5460098ca9398a4aa3f04bd617f7a721b6e2e5aac7 (Kadena Account 1) (chain 1)",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "To:",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "k:10a3f4a9e5317c8dba58435dfdd4121bd3e4b0483993e67b65bea9c3c1113af4 (chain 1)",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {},
+            "type": "Divider",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": {
+                "key": null,
+                "props": {
+                  "children": "APPROVING (2/2)",
+                },
+                "type": "Bold",
+              },
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "Gas spend:",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "Up to 0.000025 KDA",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {},
+            "type": "Divider",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "Transaction lifetime:",
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": [
+                {
+                  "key": null,
+                  "props": {
+                    "children": "Expired",
+                  },
+                  "type": "Bold",
+                },
+                " (expires 11/8/2023, 12:06:06 AM)",
+              ],
+            },
+            "type": "Text",
+          },
+          {
+            "key": null,
+            "props": {
+              "children": "⚠️  Transaction already expired",
+            },
+            "type": "Text",
+          },
+        ],
+      }
+    `);
+    assertIsConfirmationDialog(ui);
     await ui.ok();
 
     const result = await response;
@@ -51,7 +183,7 @@ describe("kda_signTransaction", () => {
       });
     } else {
       throw new Error(
-        `Expected result string but got: ${JSON.stringify(result.response)}`
+        `Expected result string but got: ${JSON.stringify(result.response)}`,
       );
     }
   });

@@ -1,15 +1,15 @@
-import { produce } from 'immer';
-import { Box, Heading, Text, Divider } from '@metamask/snaps-sdk/jsx';
+import { produce } from "immer";
+import { Box, Heading, Text, Divider } from "@metamask/snaps-sdk/jsx";
 import {
   UserRejectedRequestError,
   InvalidRequestError,
-} from '@metamask/snaps-sdk';
-import { ApiParams, DeleteNetworkRequestParams } from '../types';
-import renderNetwork from '../utils/renderNetwork';
-import { makeValidator } from '../utils/validate';
+} from "@metamask/snaps-sdk";
+import { ApiParams, DeleteNetworkRequestParams } from "../types";
+import renderNetwork from "../utils/renderNetwork";
+import { makeValidator } from "../utils/validate";
 
 const validateParams = makeValidator({
-  id: 'string',
+  id: "string",
 });
 
 export const deleteNetwork = async (snapApi: ApiParams): Promise<boolean> => {
@@ -19,28 +19,29 @@ export const deleteNetwork = async (snapApi: ApiParams): Promise<boolean> => {
   const { id } = snapApi.requestParams as DeleteNetworkRequestParams;
 
   if (snapApi.state.networks.length === 1) {
-    throw new InvalidRequestError('Cannot delete the only network');
+    throw new InvalidRequestError("Cannot delete the only network");
   }
 
   const network = snapApi.state.networks.find((network) => network.id === id);
 
   if (!network) {
-    throw new InvalidRequestError('Network does not exist');
+    throw new InvalidRequestError("Network does not exist");
   }
 
   if (snapApi.state.activeNetwork === network.id) {
-    throw new InvalidRequestError('Cannot delete the active network');
+    throw new InvalidRequestError("Cannot delete the active network");
   }
 
   const confirm = await snap.request({
-    method: 'snap_dialog',
+    method: "snap_dialog",
     params: {
-      type: 'confirmation',
+      type: "confirmation",
       content: (
         <Box>
           <Heading>Delete custom network</Heading>
           <Text>
-            Do you want to allow {origin} to delete the following Kadena network?
+            Do you want to allow {origin} to delete the following Kadena
+            network?
           </Text>
           <Divider />
           {renderNetwork(network)}
@@ -50,7 +51,7 @@ export const deleteNetwork = async (snapApi: ApiParams): Promise<boolean> => {
   });
 
   if (!confirm) {
-    throw new UserRejectedRequestError('Rejected delete network');
+    throw new UserRejectedRequestError("Rejected delete network");
   }
 
   const networkIndex = snapApi.state.networks.findIndex(
@@ -61,9 +62,9 @@ export const deleteNetwork = async (snapApi: ApiParams): Promise<boolean> => {
   });
 
   await snapApi.wallet.request({
-    method: 'snap_manageState',
+    method: "snap_manageState",
     params: {
-      operation: 'update',
+      operation: "update",
       newState,
     },
   });

@@ -7,7 +7,7 @@
     "url": "git+https://github.com/mindsend-datatech/kadena-snap.git"
   },
   "source": {
-    "shasum": "jqtKH4Zp09zEaFt6RfUS1OWTBrmAzq1JNFEWaZZ6L/k=",
+    "shasum": "xdx7s62OnWUNQDMDvcCeiGDxCG+FkltPNaNf0mOFf3c=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

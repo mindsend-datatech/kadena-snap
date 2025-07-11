@@ -1,14 +1,14 @@
-import { produce } from 'immer';
+import { produce } from "immer";
 import {
   UserRejectedRequestError,
   InvalidRequestError,
-} from '@metamask/snaps-sdk';
-import { Box, Heading, Text } from '@metamask/snaps-sdk/jsx';
-import { ApiParams, SetActiveNetworkRequestParams } from '../types';
-import { makeValidator } from '../utils/validate';
+} from "@metamask/snaps-sdk";
+import { Box, Heading, Text } from "@metamask/snaps-sdk/jsx";
+import { ApiParams, SetActiveNetworkRequestParams } from "../types";
+import { makeValidator } from "../utils/validate";
 
 const validateParams = makeValidator({
-  id: 'string',
+  id: "string",
 });
 
 export const setActiveNetwork = async (
@@ -28,20 +28,22 @@ export const setActiveNetwork = async (
   const { name } = network;
 
   const confirm = await snap.request({
-    method: 'snap_dialog',
+    method: "snap_dialog",
     params: {
-      type: 'confirmation',
+      type: "confirmation",
       content: (
         <Box>
           <Heading>Switching to {name}</Heading>
-          <Text>Do you want to allow {origin} to switch to {name}?</Text>
+          <Text>
+            Do you want to allow {origin} to switch to {name}?
+          </Text>
         </Box>
       ),
     },
   });
 
   if (confirm !== true) {
-    throw new UserRejectedRequestError('Rejected by user');
+    throw new UserRejectedRequestError("Rejected by user");
   }
 
   const newState = produce(snapApi.state, (draft) => {
@@ -49,9 +51,9 @@ export const setActiveNetwork = async (
   });
 
   await snapApi.wallet.request({
-    method: 'snap_manageState',
+    method: "snap_manageState",
     params: {
-      operation: 'update',
+      operation: "update",
       newState,
     },
   });

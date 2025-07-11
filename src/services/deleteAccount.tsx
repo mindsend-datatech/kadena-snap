@@ -1,24 +1,24 @@
-import { produce } from 'immer';
+import { produce } from "immer";
 import {
   InvalidRequestError,
   UserRejectedRequestError,
-} from '@metamask/snaps-sdk';
-import { ApiParams, DeleteAccountRequestParams } from '../types';
-import { makeValidator } from '../utils/validate';
-import { Box, Heading, Text, Divider } from '@metamask/snaps-sdk/jsx';
+} from "@metamask/snaps-sdk";
+import { ApiParams, DeleteAccountRequestParams } from "../types";
+import { makeValidator } from "../utils/validate";
+import { heading, panel, text, divider } from "@metamask/snaps-sdk";
 
 const validateParams = makeValidator({
-  id: 'string',
+  id: "string",
 });
 
 const deleteAccountHelper = async (
   snapApi: ApiParams,
-  type: 'default' | 'hardware',
+  type: "default" | "hardware",
 ) => {
   validateParams(snapApi.requestParams);
 
   const accounts =
-    type === 'hardware'
+    type === "hardware"
       ? snapApi.state.hardwareAccounts
       : snapApi.state.accounts;
 
@@ -32,14 +32,15 @@ const deleteAccountHelper = async (
   const account = accounts[accountIndex];
 
   const confirm = await snap.request({
-    method: 'snap_dialog',
+    method: "snap_dialog",
     params: {
-      type: 'confirmation',
+      type: "confirmation",
       content: (
         <Box>
           <Heading>Delete account</Heading>
           <Text>
-            Do you want to allow {snapApi.origin} to delete the following Kadena account?
+            Do you want to allow {snapApi.origin} to delete the following Kadena
+            account?
           </Text>
           <Divider />
           <Text>Account: {account.name}</Text>
@@ -50,18 +51,18 @@ const deleteAccountHelper = async (
   });
 
   if (!confirm) {
-    throw new UserRejectedRequestError('Rejected delete account');
+    throw new UserRejectedRequestError("Rejected delete account");
   }
 
   const newState = produce(snapApi.state, (draft) => {
-    if (type === 'hardware') draft.hardwareAccounts.splice(accountIndex, 1);
+    if (type === "hardware") draft.hardwareAccounts.splice(accountIndex, 1);
     else draft.accounts.splice(accountIndex, 1);
   });
 
   await snapApi.wallet.request({
-    method: 'snap_manageState',
+    method: "snap_manageState",
     params: {
-      operation: 'update',
+      operation: "update",
       newState,
     },
   });
@@ -72,11 +73,11 @@ const deleteAccountHelper = async (
 };
 
 export const deleteAccount = async (snapApi: ApiParams): Promise<boolean> => {
-  return deleteAccountHelper(snapApi, 'default');
+  return deleteAccountHelper(snapApi, "default");
 };
 
 export const deleteHardwareAccount = async (
   snapApi: ApiParams,
 ): Promise<boolean> => {
-  return deleteAccountHelper(snapApi, 'hardware');
+  return deleteAccountHelper(snapApi, "hardware");
 };

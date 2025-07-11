@@ -1,26 +1,26 @@
-import { produce } from 'immer';
+import { produce } from "immer";
 import {
   UserRejectedRequestError,
   InvalidRequestError,
-} from '@metamask/snaps-sdk';
-import { Box, Heading, Text, Divider } from '@metamask/snaps-sdk/jsx';
-import { ApiParams, Network, StoreNetworkRequestParams } from '../types';
-import renderNetwork from '../utils/renderNetwork';
-import { makeValidator } from '../utils/validate';
-import { nanoid } from 'nanoid';
+} from "@metamask/snaps-sdk";
+import { Box, Heading, Text, Divider } from "@metamask/snaps-sdk/jsx";
+import { ApiParams, Network, StoreNetworkRequestParams } from "../types";
+import renderNetwork from "../utils/renderNetwork";
+import { makeValidator } from "../utils/validate";
+import { nanoid } from "nanoid";
 
-const validateParams = makeValidator({ network: 'object' });
+const validateParams = makeValidator({ network: "object" });
 const validateNetwork = makeValidator({
-  name: 'string',
-  networkId: 'string',
-  nodeUrl: 'string',
-  isTestnet: 'boolean',
-  transactionListUrl: 'string',
-  transactionListTtl: 'number',
-  blockExplorerAddress: 'string',
-  blockExplorerTransaction: 'string',
-  blockExplorerAddressTransactions: 'string',
-  buyPageUrl: 'string',
+  name: "string",
+  networkId: "string",
+  nodeUrl: "string",
+  isTestnet: "boolean",
+  transactionListUrl: "string",
+  transactionListTtl: "number",
+  blockExplorerAddress: "string",
+  blockExplorerTransaction: "string",
+  blockExplorerAddressTransactions: "string",
+  buyPageUrl: "string",
 });
 
 export const storeNetwork = async (snapApi: ApiParams): Promise<Network> => {
@@ -47,14 +47,15 @@ export const storeNetwork = async (snapApi: ApiParams): Promise<Network> => {
   };
 
   const confirm = await snap.request({
-    method: 'snap_dialog',
+    method: "snap_dialog",
     params: {
-      type: 'confirmation',
+      type: "confirmation",
       content: (
         <Box>
           <Heading>Adding custom network</Heading>
           <Text>
-            Do you want to allow {origin} to add the following custom Kadena network?
+            Do you want to allow {origin} to add the following custom Kadena
+            network?
           </Text>
           <Divider />
           {renderNetwork(newNetwork)}
@@ -64,7 +65,7 @@ export const storeNetwork = async (snapApi: ApiParams): Promise<Network> => {
   });
 
   if (!confirm) {
-    throw new UserRejectedRequestError('Rejected by user');
+    throw new UserRejectedRequestError("Rejected by user");
   }
 
   const newState = produce(snapApi.state, (draft) => {
@@ -72,9 +73,9 @@ export const storeNetwork = async (snapApi: ApiParams): Promise<Network> => {
   });
 
   await snapApi.wallet.request({
-    method: 'snap_manageState',
+    method: "snap_manageState",
     params: {
-      operation: 'update',
+      operation: "update",
       newState,
     },
   });

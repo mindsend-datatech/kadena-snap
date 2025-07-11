@@ -1,25 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es2022",
-    "module": "commonjs",
-    "lib": ["es2022"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
+    "declaration": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "lib": ["DOM", "ES2020"],
+    "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "declaration": true,
-    "declarationMap": true,
+    "useUnknownInCatchVariables": false,
     "sourceMap": true,
-    "jsx": "react-jsx",
-    "types": ["jest", "@metamask/snaps-jest"]
+    "strict": true,
+    "target": "ES2020",
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["**/__snapshots__/**", "**/test/**", "**/*.test.ts"],
+  "include": ["src"]
 }

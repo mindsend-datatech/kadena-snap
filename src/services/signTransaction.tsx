@@ -1,21 +1,21 @@
-import { sign } from '@kadena/cryptography-utils';
+import { sign } from "@kadena/cryptography-utils";
 import {
   ResourceNotFoundError,
   UserRejectedRequestError,
   ParseError,
   InvalidRequestError,
   InternalError,
-} from '@metamask/snaps-sdk';
-import { Box, Copyable, Divider, Heading, Text } from '@metamask/snaps-sdk/jsx';
-import { derive } from './addAccount';
-import { ApiParams, SignTransactionRequestParams } from '../types';
-import type { ISigner, ICommandPayload } from '@kadena/types';
-import { makeValidator } from '../utils/validate';
-import { renderTransactionRequest } from '../utils/renderSignatureRequest';
+} from "@metamask/snaps-sdk";
+import { Box, Copyable, Divider, Heading, Text } from "@metamask/snaps-sdk/jsx";
+import { derive } from "./addAccount";
+import { ApiParams, SignTransactionRequestParams } from "../types";
+import type { ISigner, ICommandPayload } from "@kadena/types";
+import { makeValidator } from "../utils/validate";
+import { renderTransactionRequest } from "../utils/renderSignatureRequest";
 
 const validateParams = makeValidator({
-  id: 'string',
-  transaction: 'string',
+  id: "string",
+  transaction: "string",
 });
 
 function getSignerEntries(
@@ -39,20 +39,20 @@ export async function signTransaction(
 
   const account = snapApi.state.accounts.find((account) => account.id === id);
   if (!account) {
-    throw new ResourceNotFoundError('Account not found');
+    throw new ResourceNotFoundError("Account not found");
   }
 
   const { privateKey } = await derive(account.index);
 
   if (!privateKey) {
-    throw new ResourceNotFoundError('No private key found');
+    throw new ResourceNotFoundError("No private key found");
   }
 
   let txn;
   try {
     txn = JSON.parse(transaction);
   } catch (e) {
-    throw new ParseError('Transaction did not contain valid JSON');
+    throw new ParseError("Transaction did not contain valid JSON");
   }
 
   // Validate network matches
@@ -62,7 +62,7 @@ export async function signTransaction(
   );
 
   if (!activeNetwork) {
-    throw new InvalidRequestError('Active network not found');
+    throw new InvalidRequestError("Active network not found");
   }
 
   if (activeNetwork.networkId !== txn.networkId) {
@@ -71,7 +71,7 @@ export async function signTransaction(
     );
   }
 
-  const publicKey = account.publicKey.replace(/^0x00/, '');
+  const publicKey = account.publicKey.replace(/^0x00/, "");
   const signerEntries = getSignerEntries(txn, publicKey);
 
   if (signerEntries.length === 0) {
@@ -95,20 +95,20 @@ export async function signTransaction(
   } else if (!!txn.payload.cont) {
     result = await continuationConfirmationDialog(txn.payload.cont, txn.meta);
   } else {
-    throw new InvalidRequestError('Invalid transaction payload');
+    throw new InvalidRequestError("Invalid transaction payload");
   }
 
   if (result !== true) {
-    throw new UserRejectedRequestError('User denied transaction');
+    throw new UserRejectedRequestError("User denied transaction");
   }
 
   const signResponse = sign(transaction, {
     publicKey,
-    secretKey: privateKey.replace('0x', ''),
+    secretKey: privateKey.replace("0x", ""),
   });
 
   if (!signResponse?.sig) {
-    throw new InternalError('Failed to obtain signature');
+    throw new InternalError("Failed to obtain signature");
   }
   return JSON.stringify({
     responses: [
@@ -117,7 +117,7 @@ export async function signTransaction(
           sigs: [{ pubKey: signResponse.pubKey, sig: signResponse.sig }],
           cmd: transaction,
         },
-        outcome: { hash: signResponse.hash, result: 'success' },
+        outcome: { hash: signResponse.hash, result: "success" },
       },
     ],
   });
@@ -129,9 +129,9 @@ async function transactionConfirmationDialog(
   snapApi: ApiParams,
 ): Promise<boolean> {
   const result = await snap.request({
-    method: 'snap_dialog',
+    method: "snap_dialog",
     params: {
-      type: 'confirmation',
+      type: "confirmation",
       content: (
         <Box>
           <Text>Transaction signature request</Text>
@@ -169,18 +169,21 @@ async function continuationConfirmationDialog(
 ): Promise<boolean> {
   const gasFee = meta.gasLimit * meta.gasPrice;
   const result = await snap.request({
-    method: 'snap_dialog',
+    method: "snap_dialog",
     params: {
-      type: 'confirmation',
+      type: "confirmation",
       content: (
         <Box>
           <Heading>Finish cross-chain transaction</Heading>
           <Text>
-            Complete the cross-chain transaction by approving this gas fee payment of up to {gasFee} KDA
+            Complete the cross-chain transaction by approving this gas fee
+            payment of up to {gasFee} KDA
           </Text>
           <Divider />
           <Heading>Transaction Details</Heading>
-          <Text>From chain {cont.data.fromChain} to chain {cont.data.toChain}</Text>
+          <Text>
+            From chain {cont.data.fromChain} to chain {cont.data.toChain}
+          </Text>
           <Divider />
           <Text>
             <Text>Request Key:</Text>
