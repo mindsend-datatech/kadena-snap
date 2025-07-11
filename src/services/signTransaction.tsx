@@ -6,7 +6,7 @@ import {
   InvalidRequestError,
   InternalError,
 } from '@metamask/snaps-sdk';
-import { copyable, divider, heading, panel, text } from '@metamask/snaps-ui';
+import { Box, Copyable, Divider, Heading, Text } from '@metamask/snaps-sdk/jsx';
 import { derive } from './addAccount';
 import { ApiParams, SignTransactionRequestParams } from '../types';
 import { ISigner, ICommandPayload } from '@kadena/types';
@@ -128,17 +128,17 @@ async function transactionConfirmationDialog(
   txn: any,
   snapApi: ApiParams,
 ) {
-  const renderedTxnRequest = renderTransactionRequest(signer, txn, snapApi);
-
   const result = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
-      content: panel([
-        text('Transaction signature request'),
-        divider(),
-        ...renderedTxnRequest,
-      ]),
+      content: (
+        <Box>
+          <Text>Transaction signature request</Text>
+          <Divider />
+          {renderTransactionRequest(signer, txn, snapApi)}
+        </Box>
+      ),
     },
   });
 
@@ -151,29 +151,41 @@ async function continuationConfirmationDialog(cont: any, meta: any) {
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
-      content: panel([
-        heading('Finish cross-chain transaction'),
-        text(
-          `Complete the cross-chain transaction by approving this gas fee payment of up to ${gasFee} KDA`,
-        ),
-        divider(),
-        heading('Transaction Details'),
-        text(`From chain ${cont.data.fromChain} to chain ${cont.data.toChain}`),
-        divider(),
-        text('**Request Key:**'),
-        copyable(cont.pactId),
-        text('**From:**'),
-        copyable(cont.data.from),
-        divider(),
-        text('**To:**'),
-        copyable(cont.data.to),
-        divider(),
-        text('**Amount:**'),
-        text(`${cont.data.amount} KDA`),
-        divider(),
-        text('**Gas Fee:**'),
-        text(`Up to ${gasFee} KDA`),
-      ]),
+      content: (
+        <Box>
+          <Heading>Finish cross-chain transaction</Heading>
+          <Text>
+            Complete the cross-chain transaction by approving this gas fee payment of up to {gasFee} KDA
+          </Text>
+          <Divider />
+          <Heading>Transaction Details</Heading>
+          <Text>From chain {cont.data.fromChain} to chain {cont.data.toChain}</Text>
+          <Divider />
+          <Text>
+            <Text>Request Key:</Text>
+          </Text>
+          <Copyable value={cont.pactId} />
+          <Text>
+            <Text>From:</Text>
+          </Text>
+          <Copyable value={cont.data.from} />
+          <Divider />
+          <Text>
+            <Text>To:</Text>
+          </Text>
+          <Copyable value={cont.data.to} />
+          <Divider />
+          <Text>
+            <Text>Amount:</Text>
+          </Text>
+          <Text>{cont.data.amount} KDA</Text>
+          <Divider />
+          <Text>
+            <Text>Gas Fee:</Text>
+          </Text>
+          <Text>Up to {gasFee} KDA</Text>
+        </Box>
+      ),
     },
   });
 

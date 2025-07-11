@@ -1,5 +1,5 @@
 {
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Metamask snap to manage your Kadena accounts and KDA.",
   "proposedName": "Kadena",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "git+https://github.com/mindsend-datatech/kadena-snap.git"
   },
   "source": {
-    "shasum": "BoKYhU9trg3VammakGMoA5oMasZF8O47E3l4DucCGCI=",
+    "shasum": "qN8Pm0nBjpmYhDHRwdTmWKBKKtqsamklSxAcNLnWzXs=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -22,11 +22,7 @@
     "endowment:page-home": {},
     "snap_getBip32Entropy": [
       {
-        "path": [
-          "m",
-          "44'",
-          "626'"
-        ],
+        "path": ["m", "44'", "626'"],
         "curve": "ed25519"
       }
     ],
@@ -36,5 +32,6 @@
       "snaps": false
     }
   },
+  "platformVersion": "8.1.0",
   "manifestVersion": "0.1"
 }

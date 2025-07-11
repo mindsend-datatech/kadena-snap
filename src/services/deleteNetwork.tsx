@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { heading, panel, text, divider } from '@metamask/snaps-ui';
+import { Box, Heading, Text, Divider } from '@metamask/snaps-sdk/jsx';
 import {
   UserRejectedRequestError,
   InvalidRequestError,
@@ -36,14 +36,16 @@ export const deleteNetwork = async (snapApi: ApiParams): Promise<boolean> => {
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
-      content: panel([
-        heading(`Delete custom network`),
-        text(
-          `Do you want to allow ${origin} to delete the following Kadena network?`,
-        ),
-        divider(),
-        ...renderNetwork(network),
-      ]),
+      content: (
+        <Box>
+          <Heading>Delete custom network</Heading>
+          <Text>
+            Do you want to allow {origin} to delete the following Kadena network?
+          </Text>
+          <Divider />
+          {renderNetwork(network)}
+        </Box>
+      ),
     },
   });
 

@@ -19,7 +19,7 @@ describe('kda_deleteNetwork', () => {
       },
     });
     const ui = await response.getInterface({ timeout: 50000 });
-    await ui.ok();
+    await (ui as any).ok();
     await response;
 
     let networksResponse: any = await request({
@@ -40,7 +40,7 @@ describe('kda_deleteNetwork', () => {
     });
 
     const deleteUi = await deleteDialog.getInterface({ timeout: 50000 });
-    await deleteUi.ok();
+    await (deleteUi as any).ok();
     await deleteDialog;
 
     networksResponse = await request({
@@ -86,7 +86,7 @@ describe('kda_deleteNetwork', () => {
       },
     });
     const storeUi = await storeResponse.getInterface({ timeout: 50000 });
-    await storeUi.ok();
+    await (storeUi as any).ok();
     await storeResponse;
 
     let networksResponse: any = await request({

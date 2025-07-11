@@ -5,7 +5,7 @@ import {
 } from '@metamask/snaps-sdk';
 import { ApiParams, DeleteAccountRequestParams } from '../types';
 import { makeValidator } from '../utils/validate';
-import { heading, panel, text, divider } from '@metamask/snaps-ui';
+import { Box, Heading, Text, Divider } from '@metamask/snaps-sdk/jsx';
 
 const validateParams = makeValidator({
   id: 'string',
@@ -35,15 +35,17 @@ const deleteAccountHelper = async (
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
-      content: panel([
-        heading(`Delete account`),
-        text(
-          `Do you want to allow ${snapApi.origin} to delete the following Kadena account?`,
-        ),
-        divider(),
-        text(`Account: ${account.name}`),
-        text(`Address: ${account.address}`),
-      ]),
+      content: (
+        <Box>
+          <Heading>Delete account</Heading>
+          <Text>
+            Do you want to allow {snapApi.origin} to delete the following Kadena account?
+          </Text>
+          <Divider />
+          <Text>Account: {account.name}</Text>
+          <Text>Address: {account.address}</Text>
+        </Box>
+      ),
     },
   });
 

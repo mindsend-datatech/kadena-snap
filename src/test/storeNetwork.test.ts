@@ -27,7 +27,7 @@ describe('kda_storeNetwork', () => {
       },
     });
     const ui = await newNetworkResponse.getInterface({ timeout: 50000 });
-    await ui.ok();
+    await (ui as any).ok();
     const newNetwork = await newNetworkResponse;
 
     expect(newNetwork).toRespondWith(withId(MOCK_NEW_MAINNET));

@@ -44,7 +44,7 @@ describe('kda_deleteAccount', () => {
       });
 
       const ui = await dialog.getInterface({ timeout: 50000 });
-      await ui.ok();
+      await (ui as any).ok();
       await dialog;
     }
 

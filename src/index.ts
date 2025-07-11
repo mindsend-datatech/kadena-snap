@@ -1,5 +1,5 @@
 import { MethodNotFoundError } from '@metamask/snaps-sdk';
-import type { OnRpcRequestHandler } from '@metamask/snaps-sdk';
+import type { OnRpcRequestHandler, OnUserInputHandler } from '@metamask/snaps-sdk';
 import {
   addAccount,
   addHardwareAccount,
@@ -129,4 +129,18 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
     default:
       throw new MethodNotFoundError('Method not found.');
   }
+};
+
+/**
+ * Handle user input events from interactive UI elements.
+ * 
+ * @param args - The input handler args as object.
+ * @param args.id - The ID of the interface that received the input.
+ * @param args.event - The input event.
+ * @returns The result of handling the input event.
+ */
+export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
+  // For now, we'll just return true to approve any button clicks
+  // In a more complex implementation, you might want to handle different buttons differently
+  return true;
 };

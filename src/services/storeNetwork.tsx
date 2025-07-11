@@ -3,7 +3,7 @@ import {
   UserRejectedRequestError,
   InvalidRequestError,
 } from '@metamask/snaps-sdk';
-import { heading, panel, text, divider } from '@metamask/snaps-ui';
+import { Box, Heading, Text, Divider } from '@metamask/snaps-sdk/jsx';
 import { ApiParams, Network, StoreNetworkRequestParams } from '../types';
 import renderNetwork from '../utils/renderNetwork';
 import { makeValidator } from '../utils/validate';
@@ -50,14 +50,16 @@ export const storeNetwork = async (snapApi: ApiParams): Promise<Network> => {
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
-      content: panel([
-        heading(`Adding custom network`),
-        text(
-          `Do you want to allow ${origin} to add the following custom Kadena network?`,
-        ),
-        divider(),
-        ...renderNetwork(newNetwork),
-      ]),
+      content: (
+        <Box>
+          <Heading>Adding custom network</Heading>
+          <Text>
+            Do you want to allow {origin} to add the following custom Kadena network?
+          </Text>
+          <Divider />
+          {renderNetwork(newNetwork)}
+        </Box>
+      ),
     },
   });
 
