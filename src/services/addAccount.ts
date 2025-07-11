@@ -1,4 +1,4 @@
-import {
+import type {
   Account,
   AddHardwareAccountRequestParams,
   ApiParams,
@@ -10,8 +10,27 @@ import { storeAccount } from './storeAccount';
 import { nanoid } from 'nanoid';
 
 /**
+ * Get the next available account index.
+ * @param snapApi - The snap API parameters containing state.
+ * @returns The next available index for a new account.
+ */
+const getNextIndex = (snapApi: ApiParams): number => {
+  const indices = snapApi.state.accounts
+    .map((account) => account.index)
+    .sort((a, b) => a - b);
+
+  let index = 0;
+  for (const current of indices) {
+    if (current !== index) break;
+    index++;
+  }
+
+  return index;
+};
+
+/**
  * Derive an account from the Kadena snap.
- * @param requestParams
+ * @param snapApi - The snap API parameters containing state and wallet info.
  * @returns The name, address, public key, and index of the derived account.
  */
 export async function addAccount(snapApi: ApiParams): Promise<Account> {
@@ -32,6 +51,11 @@ export async function addAccount(snapApi: ApiParams): Promise<Account> {
   return account;
 }
 
+/**
+ * Derive an account using cryptographic key derivation.
+ * @param index - The account index to derive.
+ * @returns The derived account information.
+ */
 export async function derive(index: number): Promise<DerivedAccount> {
   const keyDeriver = await getKeyDeriver();
   const derivedAccount = await getAccountsFromIndex(keyDeriver, index);
@@ -44,6 +68,11 @@ const validateParams = makeValidator({
   publicKey: 'string',
 });
 
+/**
+ * Add a hardware account (e.g., Ledger) to the snap state.
+ * @param snapApi - The snap API parameters containing request data.
+ * @returns The created hardware account.
+ */
 export async function addHardwareAccount(snapApi: ApiParams): Promise<Account> {
   validateParams(snapApi.requestParams);
 
@@ -63,16 +92,3 @@ export async function addHardwareAccount(snapApi: ApiParams): Promise<Account> {
   return account;
 }
 
-const getNextIndex = (snapApi: ApiParams) => {
-  const indices = snapApi.state.accounts
-    .map((account) => account.index)
-    .sort((a, b) => a - b);
-
-  let index = 0;
-  for (const current of indices) {
-    if (current !== index) break;
-    index++;
-  }
-
-  return index;
-};

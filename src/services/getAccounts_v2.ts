@@ -1,9 +1,9 @@
-import { ApiParams } from '../types';
+import type { ApiParams } from '../types';
 import { getAccounts, getHardwareAccounts } from './getAccounts';
 import type { IAccountInfo } from '@kadena/wallet-adapter-core';
 
 /*Conforms to KIP-0037 and KIP-0038*/
-export const getAccounts_v2 = (snapApi: ApiParams): IAccountInfo[] => {
+export const getAccountsV2 = (snapApi: ApiParams): IAccountInfo[] => {
   const activeNetworkId = snapApi.state.activeNetwork;
 
   const activeNetwork = snapApi.state.networks.find(

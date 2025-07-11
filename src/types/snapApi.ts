@@ -1,12 +1,12 @@
-import { Snap } from './snap';
-import { Network, SnapState } from './snapState';
+import type { Snap } from './snap';
+import type { Network, SnapState } from './snapState';
 
-export interface ApiParams {
+export type ApiParams = {
   state: SnapState;
   requestParams: ApiRequestParams;
   wallet: Snap;
   origin: string;
-}
+};
 
 export type ApiRequestParams =
   | DeriveAccountRequestParams

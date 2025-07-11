@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { Account, ApiParams } from '../types';
+import type { Account, ApiParams } from '../types';
 
 export const storeAccount = async (
   snapApi: ApiParams,
