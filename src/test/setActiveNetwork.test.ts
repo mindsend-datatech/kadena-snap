@@ -1,4 +1,5 @@
 import { installSnap } from '@metamask/snaps-jest';
+import { assert } from '@metamask/utils';
 
 describe('kda_setActiveNetwork ', () => {
   it('gets and sets the current active network properly', async () => {
@@ -23,7 +24,8 @@ describe('kda_setActiveNetwork ', () => {
     });
 
     const ui = await dialog.getInterface({ timeout: 50000 });
-    await (ui as any).ok();
+    assert(ui.type === 'confirmation');
+    await ui.ok();
     await dialog;
 
     // Now the network 1 it's active

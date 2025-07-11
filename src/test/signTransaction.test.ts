@@ -1,4 +1,5 @@
 import { installSnap } from "@metamask/snaps-jest";
+import { assert } from '@metamask/utils';
 import { getAccounts } from "./helpers/test-utils";
 
 describe("kda_signTransaction", () => {
@@ -17,7 +18,8 @@ describe("kda_signTransaction", () => {
 
     const ui = await response.getInterface({ timeout: 50000 });
     expect(JSON.parse(JSON.stringify(ui.content.props))).toMatchSnapshot();
-    await (ui as any).ok();
+    assert(ui.type === 'confirmation');
+    await ui.ok();
 
     const result = await response;
 

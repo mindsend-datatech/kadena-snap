@@ -1,4 +1,5 @@
 import { installSnap } from '@metamask/snaps-jest';
+import { assert } from '@metamask/utils';
 
 describe('kda_deleteAccount', () => {
   it('deletes the account properly', async () => {
@@ -44,7 +45,8 @@ describe('kda_deleteAccount', () => {
       });
 
       const ui = await dialog.getInterface({ timeout: 50000 });
-      await (ui as any).ok();
+      assert(ui.type === 'confirmation');
+      await ui.ok();
       await dialog;
     }
 

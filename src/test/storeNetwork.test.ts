@@ -1,4 +1,5 @@
 import { installSnap } from '@metamask/snaps-jest';
+import { assert } from '@metamask/utils';
 import { MOCK_MAINNET, MOCK_TESTNET } from './helpers/test-data';
 import { withId } from './helpers/test-utils';
 
@@ -27,7 +28,8 @@ describe('kda_storeNetwork', () => {
       },
     });
     const ui = await newNetworkResponse.getInterface({ timeout: 50000 });
-    await (ui as any).ok();
+    assert(ui.type === 'confirmation');
+    await ui.ok();
     const newNetwork = await newNetworkResponse;
 
     expect(newNetwork).toRespondWith(withId(MOCK_NEW_MAINNET));

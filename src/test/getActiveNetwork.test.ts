@@ -1,4 +1,5 @@
 import { installSnap } from '@metamask/snaps-jest';
+import { assert } from '@metamask/utils';
 
 describe('kda_getActiveNetwork', () => {
   it('should return the current active network', async () => {
@@ -36,6 +37,7 @@ describe('kda_getActiveNetwork', () => {
     });
 
     const ui = await setNetworkResponse.getInterface({ timeout: 50000 });
+    assert(ui.type === 'confirmation');
     await ui.ok();
     await setNetworkResponse;
 

@@ -1,4 +1,5 @@
 import { installSnap } from '@metamask/snaps-jest';
+import { assert } from '@metamask/utils';
 import { MOCK_MAINNET, MOCK_TESTNET } from './helpers/test-data';
 import { withId } from './helpers/test-utils';
 
@@ -19,7 +20,8 @@ describe('kda_deleteNetwork', () => {
       },
     });
     const ui = await response.getInterface({ timeout: 50000 });
-    await (ui as any).ok();
+    assert(ui.type === 'confirmation');
+    await ui.ok();
     await response;
 
     let networksResponse: any = await request({
@@ -40,7 +42,8 @@ describe('kda_deleteNetwork', () => {
     });
 
     const deleteUi = await deleteDialog.getInterface({ timeout: 50000 });
-    await (deleteUi as any).ok();
+    assert(deleteUi.type === 'confirmation');
+    await deleteUi.ok();
     await deleteDialog;
 
     networksResponse = await request({
@@ -86,7 +89,8 @@ describe('kda_deleteNetwork', () => {
       },
     });
     const storeUi = await storeResponse.getInterface({ timeout: 50000 });
-    await (storeUi as any).ok();
+    assert(storeUi.type === 'confirmation');
+    await storeUi.ok();
     await storeResponse;
 
     let networksResponse: any = await request({
