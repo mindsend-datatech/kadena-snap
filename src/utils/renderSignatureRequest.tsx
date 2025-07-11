@@ -1,7 +1,7 @@
 import { parseCapabilities } from "../utils/parseCapabilities";
-import { Divider, Text, Bold } from "@metamask/snaps-sdk/jsx";
+import { Divider, Text, Bold, Box } from "@metamask/snaps-sdk/jsx";
 import type { ISigner, ICommandPayload } from "@kadena/types";
-import { ApiParams } from "../types";
+import type { ApiParams } from "../types";
 
 const TXN_LIFETIME_WARN_SEC = 3600;
 
@@ -76,5 +76,10 @@ export function renderTransactionRequest(
     ];
   });
 
-  return [...capElements, ...renderLifetime(txn)];
+  return (
+    <Box>
+      {capElements}
+      {renderLifetime(txn)}
+    </Box>
+  );
 }

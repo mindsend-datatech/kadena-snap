@@ -3,9 +3,9 @@ import {
   InvalidRequestError,
   UserRejectedRequestError,
 } from "@metamask/snaps-sdk";
-import { ApiParams, DeleteAccountRequestParams } from "../types";
+import type { ApiParams, DeleteAccountRequestParams } from "../types";
 import { makeValidator } from "../utils/validate";
-import { heading, panel, text, divider } from "@metamask/snaps-sdk";
+import { Box, Heading, Text, Divider } from "@metamask/snaps-sdk/jsx";
 
 const validateParams = makeValidator({
   id: "string",

@@ -1,5 +1,5 @@
 import type { Network } from '../types/index';
-import { Text, Bold } from '@metamask/snaps-sdk/jsx';
+import { Text, Bold, Box } from '@metamask/snaps-sdk/jsx';
 
 export default function renderNetwork(network: Network) {
   const {
@@ -14,17 +14,19 @@ export default function renderNetwork(network: Network) {
     blockExplorerAddressTransactions,
   } = network;
   
-  return [
-    <Text key="name">
-      <Bold>Network name: {name}</Bold>
-    </Text>,
-    <Text key="networkId">Network ID: {networkId}</Text>,
-    <Text key="isTestnet">Testnet? {String(isTestnet ? "yes" : "no")}</Text>,
-    <Text key="nodeUrl">Node URL: {nodeUrl}</Text>,
-    <Text key="transactionListTtl">Transaction list TTL: {String(transactionListTtl)}</Text>,
-    <Text key="transactionListUrl">Transaction list URL: {transactionListUrl}</Text>,
-    <Text key="blockExplorerAddress">Explorer Address URL: {blockExplorerAddress}</Text>,
-    <Text key="blockExplorerTransaction">Explorer Transaction URL: {blockExplorerTransaction}</Text>,
-    <Text key="blockExplorerAddressTransactions">Explorer Address Transactions URL: {blockExplorerAddressTransactions}</Text>,
-  ];
+  return (
+    <Box>
+      <Text>
+        <Bold>Network name: {name}</Bold>
+      </Text>
+      <Text>Network ID: {networkId}</Text>
+      <Text>Testnet? {String(isTestnet ? "yes" : "no")}</Text>
+      <Text>Node URL: {nodeUrl}</Text>
+      <Text>Transaction list TTL: {String(transactionListTtl)}</Text>
+      <Text>Transaction list URL: {transactionListUrl}</Text>
+      <Text>Explorer Address URL: {blockExplorerAddress}</Text>
+      <Text>Explorer Transaction URL: {blockExplorerTransaction}</Text>
+      <Text>Explorer Address Transactions URL: {blockExplorerAddressTransactions}</Text>
+    </Box>
+  );
 }
