@@ -2081,6 +2081,7 @@ __metadata:
     "@metamask/snaps-sdk": "npm:^8.1.0"
     "@metamask/snaps-types": "npm:^2.0.0"
     "@metamask/snaps-utils": "npm:^8.1.0"
+    "@metamask/utils": "npm:^9.0.0"
     "@types/jest": "npm:^30.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.33.0"
     "@typescript-eslint/parser": "npm:^5.33.0"
