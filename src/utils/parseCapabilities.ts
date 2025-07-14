@@ -1,9 +1,9 @@
 import type { ISigner, ICap, IPactDecimal, IPactInt, ICommandPayload, } from '@kadena/types';
 import { InvalidRequestError } from '@metamask/snaps-sdk';
 
-interface KnownCapMap {
+type KnownCapMap = {
   [capName: string]: KnownCapFn;
-}
+};
 
 type KnownCapFn = (clist: ICap, txn: ICommandPayload, accounts:  Record<string, string>) => string;
 
@@ -11,7 +11,7 @@ const isObject = (obj: unknown): obj is Record<string, unknown> => {
   return typeof obj === "object" && obj !== null;
 }
 
-const hasField = <T extends string>(obj: Record<string, unknown>, field: T): obj is Record<T, unknown> => {
+const hasField = <FieldName extends string>(obj: Record<string, unknown>, field: FieldName): obj is Record<FieldName, unknown> => {
   return field in obj;
 }
 
@@ -31,7 +31,7 @@ const parseArg = (arg: unknown): string => {
 
   if (isIPactDecimal(arg) || isIPactInt(arg)) return getNumericObjectValue(arg);
 
-  if (typeof arg === "object")
+  if (typeof arg === "object" && arg !== null)
     return JSON.stringify(arg);
 
   return String(arg);
@@ -53,7 +53,7 @@ const knownCapabilities: KnownCapMap = {
     return `Send: ${parseArg(amount)} KDA\nFrom:\n${sender}${senderName ? ` (${senderName})` : ''} (chain ${chainId})\nTo:\n${receiver}${receiverName ? ` (${receiverName})` : ''} (chain ${chainId})`
   },
   "coin.GAS": (_, { meta: { gasLimit, gasPrice }}) => `Gas spend:\nUp to ${gasLimit * gasPrice} KDA`,
-  "_unknown": ({ name, args }, { meta: { chainId }}) => {
+  unknown: ({ name, args }, { meta: { chainId }}) => {
     const strs = [`⚠️  **Unidentified capability.** Review carefully:\nCapability: ${name}`];
     if (args.length) {
       strs.push(`Arguments: ${JSON.stringify(args.map(a => parseArg(a)), null, 2)}`);
@@ -69,7 +69,7 @@ const parseCapability = (clist: ICap, txn: ICommandPayload, accounts: Record<str
   if (knownCapFn) {
     return knownCapFn(clist, txn, accounts);
   } else {
-    return knownCapabilities._unknown(clist, txn, accounts);
+    return knownCapabilities.unknown(clist, txn, accounts);
   }
 }
 

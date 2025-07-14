@@ -18,137 +18,164 @@ describe("kda_signTransaction", () => {
 
     const ui = await response.getInterface({ timeout: 50000 });
     expect(JSON.parse(JSON.stringify(ui.content.props))).toMatchInlineSnapshot(`
-      {
-        "children": [
-          {
-            "key": null,
-            "props": {
-              "children": "Transaction signature request",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {},
-            "type": "Divider",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": {
-                "key": null,
-                "props": {
-                  "children": "APPROVING (1/2)",
-                },
-                "type": "Bold",
-              },
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "Send: 0.1 KDA",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "From:",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "k:62bb7cf156ccfbe17bd6ca5460098ca9398a4aa3f04bd617f7a721b6e2e5aac7 (Kadena Account 1) (chain 1)",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "To:",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "k:10a3f4a9e5317c8dba58435dfdd4121bd3e4b0483993e67b65bea9c3c1113af4 (chain 1)",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {},
-            "type": "Divider",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": {
-                "key": null,
-                "props": {
-                  "children": "APPROVING (2/2)",
-                },
-                "type": "Bold",
-              },
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "Gas spend:",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "Up to 0.000025 KDA",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {},
-            "type": "Divider",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "Transaction lifetime:",
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": [
-                {
-                  "key": null,
-                  "props": {
-                    "children": "Expired",
-                  },
-                  "type": "Bold",
-                },
-                " (expires 11/8/2023, 12:06:06 AM)",
-              ],
-            },
-            "type": "Text",
-          },
-          {
-            "key": null,
-            "props": {
-              "children": "⚠️  Transaction already expired",
-            },
-            "type": "Text",
-          },
-        ],
-      }
+     {
+       "children": [
+         {
+           "key": null,
+           "props": {
+             "children": "Transaction signature request",
+           },
+           "type": "Text",
+         },
+         {
+           "key": null,
+           "props": {},
+           "type": "Divider",
+         },
+         {
+           "key": null,
+           "props": {
+             "children": [
+               [
+                 {
+                   "key": "cap-0-title",
+                   "props": {
+                     "children": {
+                       "key": null,
+                       "props": {
+                         "children": [
+                           "APPROVING (",
+                           "1",
+                           "/",
+                           "2",
+                           ")",
+                         ],
+                       },
+                       "type": "Bold",
+                     },
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-0-line-0",
+                   "props": {
+                     "children": "Send: 0.1 KDA",
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-0-line-1",
+                   "props": {
+                     "children": "From:",
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-0-line-2",
+                   "props": {
+                     "children": "k:62bb7cf156ccfbe17bd6ca5460098ca9398a4aa3f04bd617f7a721b6e2e5aac7 (Kadena Account 1) (chain 1)",
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-0-line-3",
+                   "props": {
+                     "children": "To:",
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-0-line-4",
+                   "props": {
+                     "children": "k:10a3f4a9e5317c8dba58435dfdd4121bd3e4b0483993e67b65bea9c3c1113af4 (chain 1)",
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-0-divider",
+                   "props": {},
+                   "type": "Divider",
+                 },
+                 {
+                   "key": "cap-1-title",
+                   "props": {
+                     "children": {
+                       "key": null,
+                       "props": {
+                         "children": [
+                           "APPROVING (",
+                           "2",
+                           "/",
+                           "2",
+                           ")",
+                         ],
+                       },
+                       "type": "Bold",
+                     },
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-1-line-0",
+                   "props": {
+                     "children": "Gas spend:",
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-1-line-1",
+                   "props": {
+                     "children": "Up to 0.000025 KDA",
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "cap-1-divider",
+                   "props": {},
+                   "type": "Divider",
+                 },
+               ],
+               [
+                 {
+                   "key": "lifetime-label",
+                   "props": {
+                     "children": "Transaction lifetime:",
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "lifetime-value",
+                   "props": {
+                     "children": [
+                       {
+                         "key": null,
+                         "props": {
+                           "children": "Expired",
+                         },
+                         "type": "Bold",
+                       },
+                       " (expires",
+                       " ",
+                       "07/11/2023, 20:06:06",
+                       ")",
+                     ],
+                   },
+                   "type": "Text",
+                 },
+                 {
+                   "key": "warning-0",
+                   "props": {
+                     "children": "⚠️  Transaction already expired",
+                   },
+                   "type": "Text",
+                 },
+               ],
+             ],
+           },
+           "type": "Box",
+         },
+       ],
+     }
     `);
     assertIsConfirmationDialog(ui);
     await ui.ok();

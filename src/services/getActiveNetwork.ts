@@ -1,4 +1,4 @@
-import { ApiParams } from '../types';
+import type { ApiParams } from '../types';
 
 export const getActiveNetwork = (snapApi: ApiParams): string => {
   return snapApi.state.activeNetwork;

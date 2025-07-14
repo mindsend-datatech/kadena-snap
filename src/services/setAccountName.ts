@@ -1,6 +1,6 @@
 import { produce } from 'immer';
 import { UserRejectedRequestError } from '@metamask/snaps-sdk';
-import { ApiParams, SetAccountNameRequestParams } from '../types';
+import type { ApiParams, SetAccountNameRequestParams } from '../types';
 import { makeValidator } from '../utils/validate';
 
 const validateParams = makeValidator({
@@ -21,12 +21,12 @@ const setAccountNameHelper = async (
       ? snapApi.state.hardwareAccounts
       : snapApi.state.accounts;
 
-  const account = accounts.find((account) => account.id === id);
+  const account = accounts.find((acc) => acc.id === id);
   if (!account) {
     throw new UserRejectedRequestError(`Account does not exist`);
   }
 
-  const accountIndex = accounts.findIndex((account) => account.id === id);
+  const accountIndex = accounts.findIndex((acc) => acc.id === id);
   const newState = produce(snapApi.state, (draft) => {
     if (type === 'hardware') draft.hardwareAccounts[accountIndex].name = name;
     else draft.accounts[accountIndex].name = name;

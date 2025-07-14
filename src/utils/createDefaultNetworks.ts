@@ -1,6 +1,10 @@
 import type { Network } from '../types';
 import { nanoid } from 'nanoid';
 
+/**
+ * Create the default Kadena networks (mainnet and testnet).
+ * @returns Array of default Kadena networks with unique IDs.
+ */
 export default function createDefaultNetworks(): Network[] {
   return [
     {

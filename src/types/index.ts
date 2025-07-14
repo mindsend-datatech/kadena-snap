@@ -1,3 +1,3 @@
-export * from './snap';
-export * from './snapApi';
-export * from './snapState';
+export type * from './snap';
+export type * from './snapApi';
+export type * from './snapState';

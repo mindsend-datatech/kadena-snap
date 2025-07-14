@@ -3,9 +3,9 @@ import {
   InvalidRequestError,
   UserRejectedRequestError,
 } from "@metamask/snaps-sdk";
-import { ApiParams, DeleteAccountRequestParams } from "../types";
+import type { ApiParams, DeleteAccountRequestParams } from "../types";
 import { makeValidator } from "../utils/validate";
-import { heading, panel, text, divider } from "@metamask/snaps-sdk";
+import { Box, Heading, Text, Divider } from "@metamask/snaps-sdk/jsx";
 
 const validateParams = makeValidator({
   id: "string",
@@ -13,7 +13,7 @@ const validateParams = makeValidator({
 
 const deleteAccountHelper = async (
   snapApi: ApiParams,
-  type: "default" | "hardware"
+  type: "default" | "hardware",
 ) => {
   validateParams(snapApi.requestParams);
 
@@ -35,15 +35,18 @@ const deleteAccountHelper = async (
     method: "snap_dialog",
     params: {
       type: "confirmation",
-      content: panel([
-        heading(`Delete account`),
-        text(
-          `Do you want to allow ${snapApi.origin} to delete the following Kadena account?`
-        ),
-        divider(),
-        text(`Account: ${account.name}`),
-        text(`Address: ${account.address}`),
-      ]),
+      content: (
+        <Box>
+          <Heading>Delete account</Heading>
+          <Text>
+            Do you want to allow {snapApi.origin} to delete the following Kadena
+            account?
+          </Text>
+          <Divider />
+          <Text>Account: {account.name}</Text>
+          <Text>Address: {account.address}</Text>
+        </Box>
+      ),
     },
   });
 
@@ -74,7 +77,7 @@ export const deleteAccount = async (snapApi: ApiParams): Promise<boolean> => {
 };
 
 export const deleteHardwareAccount = async (
-  snapApi: ApiParams
+  snapApi: ApiParams,
 ): Promise<boolean> => {
   return deleteAccountHelper(snapApi, "hardware");
 };

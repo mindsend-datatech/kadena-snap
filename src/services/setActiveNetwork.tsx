@@ -3,7 +3,7 @@ import {
   UserRejectedRequestError,
   InvalidRequestError,
 } from "@metamask/snaps-sdk";
-import { heading, panel, text } from "@metamask/snaps-sdk";
+import { Box, Heading, Text } from "@metamask/snaps-sdk/jsx";
 import { ApiParams, SetActiveNetworkRequestParams } from "../types";
 import { makeValidator } from "../utils/validate";
 
@@ -12,7 +12,7 @@ const validateParams = makeValidator({
 });
 
 export const setActiveNetwork = async (
-  snapApi: ApiParams
+  snapApi: ApiParams,
 ): Promise<boolean> => {
   validateParams(snapApi.requestParams);
 
@@ -31,10 +31,14 @@ export const setActiveNetwork = async (
     method: "snap_dialog",
     params: {
       type: "confirmation",
-      content: panel([
-        heading(`Switching to ${name}`),
-        text(`Do you want to allow ${origin} to switch to ${name}?`),
-      ]),
+      content: (
+        <Box>
+          <Heading>Switching to {name}</Heading>
+          <Text>
+            Do you want to allow {origin} to switch to {name}?
+          </Text>
+        </Box>
+      ),
     },
   });
 

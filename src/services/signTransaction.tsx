@@ -6,10 +6,10 @@ import {
   InvalidRequestError,
   InternalError,
 } from "@metamask/snaps-sdk";
-import { copyable, divider, heading, panel, text } from "@metamask/snaps-sdk";
+import { Box, Copyable, Divider, Heading, Text } from "@metamask/snaps-sdk/jsx";
 import { derive } from "./addAccount";
 import { ApiParams, SignTransactionRequestParams } from "../types";
-import { ISigner, ICommandPayload } from "@kadena/types";
+import type { ISigner, ICommandPayload } from "@kadena/types";
 import { makeValidator } from "../utils/validate";
 import { renderTransactionRequest } from "../utils/renderSignatureRequest";
 
@@ -20,7 +20,7 @@ const validateParams = makeValidator({
 
 function getSignerEntries(
   txnRequest: ICommandPayload,
-  publicKey: string
+  publicKey: string,
 ): ISigner[] {
   return txnRequest.signers.filter(({ pubKey }) => pubKey === publicKey);
 }
@@ -30,7 +30,7 @@ function getSignerEntries(
  * @returns The signature in hex format.
  */
 export async function signTransaction(
-  snapApi: ApiParams
+  snapApi: ApiParams,
 ): Promise<string | null> {
   validateParams(snapApi.requestParams);
 
@@ -58,7 +58,7 @@ export async function signTransaction(
   // Validate network matches
   const { networks, activeNetwork: activeNetworkIdx } = snapApi.state;
   const activeNetwork = networks.find(
-    (network) => network.id === activeNetworkIdx
+    (network) => network.id === activeNetworkIdx,
   );
 
   if (!activeNetwork) {
@@ -67,7 +67,7 @@ export async function signTransaction(
 
   if (activeNetwork.networkId !== txn.networkId) {
     throw new InvalidRequestError(
-      `Network ID mismatch. Found ${txn.networkId} expected ${activeNetwork.networkId}`
+      `Network ID mismatch. Found ${txn.networkId} expected ${activeNetwork.networkId}`,
     );
   }
 
@@ -76,13 +76,13 @@ export async function signTransaction(
 
   if (signerEntries.length === 0) {
     throw new InvalidRequestError(
-      `Expected signer not found in transaction (k:${publicKey})`
+      `Expected signer not found in transaction (k:${publicKey})`,
     );
   }
 
   if (signerEntries.length > 1) {
     throw new InvalidRequestError(
-      `Multiple signer entries found for (k:${publicKey})`
+      `Multiple signer entries found for (k:${publicKey})`,
     );
   }
 
@@ -125,55 +125,91 @@ export async function signTransaction(
 
 async function transactionConfirmationDialog(
   signer: ISigner,
-  txn: any,
-  snapApi: ApiParams
-) {
-  const renderedTxnRequest = renderTransactionRequest(signer, txn, snapApi);
-
+  txn: ICommandPayload,
+  snapApi: ApiParams,
+): Promise<boolean> {
   const result = await snap.request({
     method: "snap_dialog",
     params: {
       type: "confirmation",
-      content: panel([
-        text("Transaction signature request"),
-        divider(),
-        ...renderedTxnRequest,
-      ]),
+      content: (
+        <Box>
+          <Text>Transaction signature request</Text>
+          <Divider />
+          {renderTransactionRequest(signer, txn, snapApi)}
+        </Box>
+      ),
     },
   });
 
   return result;
 }
 
-async function continuationConfirmationDialog(cont: any, meta: any) {
+interface IContinuationData {
+  fromChain: string;
+  toChain: string;
+  from: string;
+  to: string;
+  amount: string;
+}
+
+interface IContinuation {
+  pactId: string;
+  data: IContinuationData;
+}
+
+interface ITransactionMeta {
+  gasLimit: number;
+  gasPrice: number;
+}
+
+async function continuationConfirmationDialog(
+  cont: IContinuation,
+  meta: ITransactionMeta,
+): Promise<boolean> {
   const gasFee = meta.gasLimit * meta.gasPrice;
   const result = await snap.request({
     method: "snap_dialog",
     params: {
       type: "confirmation",
-      content: panel([
-        heading("Finish cross-chain transaction"),
-        text(
-          `Complete the cross-chain transaction by approving this gas fee payment of up to ${gasFee} KDA`
-        ),
-        divider(),
-        heading("Transaction Details"),
-        text(`From chain ${cont.data.fromChain} to chain ${cont.data.toChain}`),
-        divider(),
-        text("**Request Key:**"),
-        copyable(cont.pactId),
-        text("**From:**"),
-        copyable(cont.data.from),
-        divider(),
-        text("**To:**"),
-        copyable(cont.data.to),
-        divider(),
-        text("**Amount:**"),
-        text(`${cont.data.amount} KDA`),
-        divider(),
-        text("**Gas Fee:**"),
-        text(`Up to ${gasFee} KDA`),
-      ]),
+      content: (
+        <Box>
+          <Heading>Finish cross-chain transaction</Heading>
+          <Text>
+            Complete the cross-chain transaction by approving this gas fee
+            payment of up to {gasFee} KDA
+          </Text>
+          <Divider />
+          <Heading>Transaction Details</Heading>
+          <Text>
+            From chain {cont.data.fromChain} to chain {cont.data.toChain}
+          </Text>
+          <Divider />
+          <Text>
+            <Text>Request Key:</Text>
+          </Text>
+          <Copyable value={cont.pactId} />
+          <Text>
+            <Text>From:</Text>
+          </Text>
+          <Copyable value={cont.data.from} />
+          <Divider />
+          <Text>
+            <Text>To:</Text>
+          </Text>
+          <Copyable value={cont.data.to} />
+          <Divider />
+          <Text>
+            <Text>Amount:</Text>
+          </Text>
+          <Text>{cont.data.amount} KDA</Text>
+          <Divider />
+          <Text>
+            <Text>Gas Fee:</Text>
+          </Text>
+          <Text>Up to {gasFee} KDA</Text>
+        </Box>
+      ),
     },
   });
 

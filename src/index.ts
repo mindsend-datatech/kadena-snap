@@ -1,5 +1,5 @@
 import { MethodNotFoundError } from '@metamask/snaps-sdk';
-import type { OnRpcRequestHandler } from '@metamask/snaps-sdk';
+import type { OnRpcRequestHandler, OnUserInputHandler } from '@metamask/snaps-sdk';
 import {
   addAccount,
   addHardwareAccount,
@@ -7,12 +7,12 @@ import {
   deleteNetwork,
   derive,
   getAccounts,
-  getAccounts_v2,
+  getAccountsV2,
   getActiveNetwork,
   setActiveNetwork,
   getNetworks,
-  getNetworks_v1,
-  getNetwork_v1,
+  getNetworksV1,
+  getNetworkV1,
   setAccountName,
   signTransaction,
   storeNetwork,
@@ -20,7 +20,7 @@ import {
   setHardwareAccountName,
   deleteHardwareAccount,
 } from './services';
-import { ApiParams, ApiRequestParams, Snap, SnapState } from './types';
+import type { ApiParams, ApiRequestParams, Snap, SnapState } from './types';
 import { BASE_ACCOUNT_NAME } from './utils/constants';
 import createDefaultNetworks from './utils/createDefaultNetworks';
 import { nanoid } from 'nanoid';
@@ -31,7 +31,6 @@ declare const snap: Snap;
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
- *
  * @param args - The request handler args as object.
  * @param args.origin - The origin of the request, e.g., the website that
  * invoked the snap.
@@ -94,7 +93,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
     case 'kda_getAccounts':
       return getAccounts(snapApi);
     case 'kda_getAccounts_v2':
-      return JSON.parse(JSON.stringify(getAccounts_v2(snapApi)));
+      return JSON.parse(JSON.stringify(getAccountsV2(snapApi)));
     case 'kda_getHardwareAccounts':
       return getHardwareAccounts(snapApi);
     case 'kda_addAccount':
@@ -116,9 +115,9 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
     case 'kda_getNetworks':
       return getNetworks(snapApi);
     case 'kda_getNetworks_v1':
-      return JSON.parse(JSON.stringify(getNetworks_v1(snapApi)));
+      return JSON.parse(JSON.stringify(getNetworksV1(snapApi)));
     case 'kda_getNetwork_v1':
-      return JSON.parse(JSON.stringify(getNetwork_v1(snapApi)));
+      return JSON.parse(JSON.stringify(getNetworkV1(snapApi)));
     case 'kda_storeNetwork':
       return storeNetwork(snapApi);
     case 'kda_deleteNetwork':
@@ -129,4 +128,17 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
     default:
       throw new MethodNotFoundError('Method not found.');
   }
+};
+
+/**
+ * Handle user input events from interactive UI elements.
+ * @param args - The input handler args as object.
+ * @param args.id - The ID of the interface that received the input.
+ * @param args.event - The input event.
+ * @returns The result of handling the input event.
+ */
+export const onUserInput: OnUserInputHandler = async ({ id: _id, event: _event }) => {
+  // For now, we'll just return true to approve any button clicks
+  // In a more complex implementation, you might want to handle different buttons differently
+  return true;
 };
