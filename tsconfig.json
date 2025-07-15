@@ -13,6 +13,5 @@
     "target": "ES2020",
     "skipLibCheck": true
   },
-  "exclude": ["**/__snapshots__/**", "**/test/**", "**/*.test.ts"],
-  "include": ["src"]
+  "exclude": ["**/__snapshots__/**", "**/test/**", "**/*.test.ts"]
 }
