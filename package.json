@@ -1,61 +1,38 @@
 {
-  "name": "@mindsend/kadena-snap",
-  "version": "1.0.7",
-  "description": "MetaMask snap to manage your Kadena accounts and KDA.",
-  "license": "BSD-3-Clause",
+  "name": "@mindsend/kadena-snap-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MetaMask snap monorepo for managing Kadena accounts and KDA tokens",
+  "homepage": "https://github.com/mindsend-datatech/kadena-snap#readme",
+  "bugs": {
+    "url": "https://github.com/mindsend-datatech/kadena-snap/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mindsend-datatech/kadena-snap.git"
   },
-  "bugs": {
-    "url": "https://github.com/mindsend-datatech/kadena-snap/issues"
-  },
-  "homepage": "https://github.com/mindsend-datatech/kadena-snap#readme",
-  "main": "./dist/bundle.js",
-  "files": [
-    "dist/",
-    "images/",
-    "snap.manifest.json"
+  "license": "BSD-3-Clause",
+  "author": "",
+  "workspaces": [
+    "packages/*"
   ],
   "scripts": {
-    "build": "mm-snap build",
-    "build:clean": "yarn clean && yarn build",
-    "clean": "rimraf dist",
+    "build": "yarn workspaces foreach -A --parallel --topological --verbose run build",
+    "build:site": "yarn workspace site run build",
+    "install-chrome": "./scripts/install-chrome.sh",
     "lint": "yarn lint:eslint && yarn lint:misc --check",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
-    "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
-    "serve": "mm-snap serve",
-    "start": "mm-snap watch",
-    "test": "jest --detectOpenHandles"
-  },
-  "dependencies": {
-    "@kadena/cryptography-utils": "^0.4.4",
-    "@kadena/wallet-adapter-core": "^0.0.1-beta.3",
-    "@metamask/snaps-sdk": "^8.1.0",
-    "bip39": "^3.1.0",
-    "immer": "^10.1.1",
-    "jest-util": "^30.0.2",
-    "nanoid": "^5.1.5",
-    "tweetnacl": "^1.0.3",
-    "web3-utils": "^4.3.3"
+    "lint:misc": "prettier '**/*.json' '**/*.md' '!**/CHANGELOG.md' '**/*.yml' --ignore-path .gitignore",
+    "start": "yarn workspaces foreach -A --parallel --interlaced --verbose run start",
+    "test": "yarn workspaces foreach -A --parallel --verbose run test"
   },
   "devDependencies": {
-    "@jest/globals": "^30.0.4",
-    "@kadena/pactjs-generator": "^1.17.1",
-    "@kadena/types": "^0.7.0",
-    "@lavamoat/allow-scripts": "^3.3.4",
-    "@metamask/auto-changelog": "^5.0.2",
     "@metamask/eslint-config": "^14.0.0",
     "@metamask/eslint-config-jest": "^14.0.0",
     "@metamask/eslint-config-nodejs": "^14.0.0",
     "@metamask/eslint-config-typescript": "^14.0.0",
-    "@metamask/key-tree": "^10.1.1",
-    "@metamask/snaps-cli": "^8.1.1",
-    "@metamask/snaps-jest": "^8.2.0",
-    "@metamask/snaps-utils": "^11.1.0",
-    "@types/jest": "^30.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.5",
@@ -64,22 +41,17 @@
     "eslint-plugin-jsdoc": "^51.3.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.5.1",
-    "jest": "^30.0.4",
-    "jest-util": "^30.0.2",
     "prettier": "^3.6.2",
     "prettier-plugin-packagejson": "^2.5.18",
-    "rimraf": "^6.0.1",
-    "through2": "^4.0.2",
-    "ts-jest": "^29.4.0",
-    "typescript": "^5.8.3",
-    "webpack": "^5.100.1"
+    "typescript": "^5.8.3"
   },
   "packageManager": "yarn@4.9.2",
   "engines": {
     "node": ">=22.0.0"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "dependencies": {
+    "bignumber.js": "^9.3.1",
+    "moment": "^2.30.1",
+    "webpack": "^5.100.1"
   }
 }
