@@ -1,6 +1,6 @@
 {
   "name": "@mindsend/kadena-snap",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "MetaMask snap to manage your Kadena accounts and KDA.",
   "license": "BSD-3-Clause",
   "repository": {
@@ -12,11 +12,7 @@
   },
   "homepage": "https://github.com/mindsend-datatech/kadena-snap#readme",
   "main": "./dist/bundle.js",
-  "files": [
-    "dist/",
-    "images/",
-    "snap.manifest.json"
-  ],
+  "files": ["dist/", "images/", "snap.manifest.json"],
   "scripts": {
     "build": "mm-snap build",
     "build:clean": "yarn clean && yarn build",
