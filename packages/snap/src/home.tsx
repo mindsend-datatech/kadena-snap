@@ -1,5 +1,5 @@
 import type { OnHomePageHandler } from '@metamask/snaps-sdk';
-import { Box, Image, Text } from '@metamask/snaps-sdk/jsx';
+import { Box, Image, Text, Link } from '@metamask/snaps-sdk/jsx';
 import packageJson from '../package.json';
 
 const snaKLogo = (
@@ -27,9 +27,11 @@ export const onHomePage: OnHomePageHandler = async () => {
         {snaKLogo}
         <Text>snaK v{packageJson.version}</Text>
         <Text>
-          Use the [official frontend](https://snak.mindsend.xyz/) to manage your accounts and KDA.
+          Use the <Link href="https://snak.mindsend.xyz/">official frontend</Link> to manage your accounts and KDA.
         </Text>
-        <Text>Learn more about Kadena [here](https://kadena.io/).</Text>
+        <Text>
+          Learn more about Kadena <Link href="https://kadena.io/">here</Link>.
+        </Text>
       </Box>
     ),
   };
